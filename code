@@ -1,0 +1,89 @@
+# imorting necessary libraries
+
+import pandas as pd
+import numpy as np
+
+# loading of data
+
+df=pd.read_csv("C:/Users/Bhavya Prakash/Downloads/spam.csv")
+
+# reading top 5 samples of data
+
+df.head()
+
+# checking number of spams and hams in the dataset
+
+df.Category.value_counts()
+
+# making a new column 'spam' to mark an email as spam or ham as 1 or 0. 
+
+df['spam']=df['Category'].apply(lambda x:1 if x=='spam' else 0)
+
+# again reading the dataset
+
+df.head()
+
+# making features and labels
+
+X=df.Message
+# X is a feature
+Y=df.spam
+# Y is a label
+
+# importing train_test_split from sklearn
+
+from sklearn.model_selection import train_test_split
+
+# splitting the training and testing data
+
+x_train,y_train,x_test,y_test=train_test_split(X,Y,test_size=0.25)
+
+# importing count vectorizer from sklearn
+
+from sklearn.feature_extraction.text import CountVectorizer
+
+cv=CountVectorizer()
+
+# x_train_cv is the final vectorized value to be given to our model
+
+x_train_cv=cv.transform(x_train.values)
+
+x_test_cv=cv.transform(x_test.values)
+
+# converting x_train_cv to an array
+
+x_train_cv.toarray()
+
+# checking the shape of the data
+
+x_train_cv.shape
+
+# vocabulary
+
+cv.vocabulary_
+
+# applying Naive Bayes model
+
+from sklearn.naive_bayes import MultinomialNB
+
+model=MultinomialNB()
+
+# fitting the data to the model
+
+model.fit(x_train_cv,y_train)
+
+# prediction values
+
+print(model.predict(x_test_cv))
+
+# classification report
+
+from sklearn.metrics import classification_report
+
+print(classification_report(y_test,predict))
+
+# checking the vredibility of the model by creating a self made data 
+
+input_text='Urgent $4 billion by clicking on the link below'
+input_text_cv=cv.transform(input_text)
+model.predict(input_text_cv)
